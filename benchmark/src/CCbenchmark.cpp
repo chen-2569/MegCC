@@ -64,6 +64,7 @@ void CCBenchmarker::load_model() {
 }
 
 void CCBenchmarker::profile() {
+    printf("------------------");
     size_t nr_input = 0;
     LITE_CAPI_CHECK(
             LITE_get_all_input_name(m_model, &nr_input, NULL),
