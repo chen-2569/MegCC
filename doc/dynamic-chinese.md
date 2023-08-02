@@ -2,11 +2,7 @@
 本文基于[megcc基础原理和执行流程](megcc_arch.md)
 ## 动态shape  
 megcc以静态图为基础，因此opr的shape推导和内存规划都尽量在编译时完成。 但有的opr shape依赖于tensor内的具体数值，需要在运行时推导shape并完成输出tensor的内存分配。比如根据深度学习神经网络中根据输入的landmark坐标对图像做抠图，抠图输出tensor的shape就和输入的landmark tensor中具体的数值有关，该tensor的shape只能在运行时用户填入landmark的具体数值后才能推导。        
-### 如何识别动态shape的opr  
-如果opr输出shape不可被静态推导，即mlir层面shape中文本层面有`?`或者数值为size_t的最大值，则认为该shape为动态shape， 该opr为动态shape的opr。     
-```mlir
-%133 = "MGB.Subtensor"(%132, %121, %130, %126, %112) {descs = [[2 : i32, 1 : i32, 2 : i32, 1 : i32, -1 : i32], [1 : i32, 3 : i32, 4 : i32, 1 : i32, -1 : i32]], flags = [[0 : i32, 1 : i32, 1 : i32, -1 : i32, -1 : i32], [0 : i32, 1 : i32, 1 : i32, -1 : i32, -1 : i32]]} : (tensor<1x224x224x3xui8>, tensor<1xf32>, tensor<1xf32>, tensor<1xf32>, tensor<1xf32>) -> tensor<?xui8>
-```
+
 ### 动态shape opr的生成  
 静态shape opr的执行只需kernel，kernel初始化函数和kernel的workspace数值。 动态shape opr还需生成推导opr输出tensor shape的函数，计算workspace的函数。`materializa pass`在kernel生成时为动态shape的opr打上标签生成对应shape推导函数和workspace函数的字符串，export时为动态shape的opr导出对应的shape推导函数和workspace函数。  
 例外情况：  

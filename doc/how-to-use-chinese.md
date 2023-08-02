@@ -7,16 +7,6 @@
 ├── runtime   : MegCC 运行时的源代码，进行推理的时候，需要和生成的 Kernel 一同编译。
 └── script    : 一些实用的帮助脚本，可以帮助用户快速完成模型编译，以及 Kernel 编译等。
 ```
-## bin文件细节
-```
-bin
-├── mgb-importer    : 辅助工具，主要将解析 MegEngine 模型，然后转化为使用 MLIR 定义的对应的 MGB IR 以及输出。 
-├── megcc-opt       : 辅助工具，主要展示 MegCC 定义的 Pass 或者 MLIR 中预定义的 Pass 的具体细节，以及用于 Debug。
-├── mgb-runner      : 辅助工具，用于直接使用 MegEngine 运行模型，用于和 MegCC Runtime 的计算结果进行对比，验证正确性。
-├── mgb-to-tinynn   : 主要的 MegCC 编译工具，将编译 MegEngine 模型，并输出运行这个模型需要的 Kernel，以及对应优化之后的模型。
-└── kernel_exporter : 辅助工具，用于指定 kernel C 代码的导出。
-```
-
 # 使用 MegCC 完成模型部署
 首先需要从 [github](https://github.com/MegEngine/MegCC/releases) 上下载需要的 MegCC 发版包，然后解压这个压缩包：`tar -xvf megcc_release_*.tar.gz`。使用 MegCC 完成模型部署主要步骤有三个步：
 - 模型编译：编译 MegEngine 模型，生成运行这个模型对应的 Kernel 以及和这些 Kernel 绑定的模型。
